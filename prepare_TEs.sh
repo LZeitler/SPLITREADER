@@ -45,7 +45,7 @@ if [ $a != $b ]; then >&2 echo "[ERROR]: $TEs file is not formated correctly. Nu
 # if dir indexes dos not exists
 if [ ! -d $INDEXES ]; then  >&2 echo "[ERROR]:`file $INDEXES`" ; exit 1; fi
 # remove tailing \ if present
-INDEXES=`echo "$INDEXES" | sed 's|/| |g'`
+# INDEXES=`echo "$INDEXES" | sed 's|/| |g'`
 ##### END tests
 
 
