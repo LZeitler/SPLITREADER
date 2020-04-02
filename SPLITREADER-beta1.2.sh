@@ -146,7 +146,8 @@ mkdir -p $TmpDir
 echo "Extracting unmapped reads from $in"
 
 # Check if bam file contain SE or PE data (0 if SE, 1 if PE) 
-pe=`$samtoolsDir/samtools view -c -f 1 $in | awk '{print $1}'` 
+# pe=`$samtoolsDir/samtools view -c -f 1 $in | awk '{print $1}'` 
+pe=1 # spare some time, my stuff is always paired 
 
 # Get unmapped reads from bam file
 $samtoolsDir/samtools view -f 4 -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.txt
@@ -154,12 +155,12 @@ $samtoolsDir/samtools view -f 4 -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.tx
 # Convert the bam files of unmapped reads into fastq files
 # If single end data
 if [ -z "$pe" ]; then
-	java -jar $picardDir/picard.jar SamToFastq I=$TmpDir/$BAMname.bam \
+	$picardDir/picard SamToFastq I=$TmpDir/$BAMname.bam \
 	   	FASTQ=$TmpDir/$BAMname.fastq 2>> $TmpDir/log.txt
 
 # If paired end data
 else
-	java -jar $picardDir/picard.jar SamToFastq I=$TmpDir/$BAMname.bam \
+	$picardDir/picard SamToFastq I=$TmpDir/$BAMname.bam \
 	   	FASTQ=$TmpDir/$BAMname.1.fastq SECOND_END_FASTQ=$TmpDir/$BAMname.2.fastq 2>> $TmpDir/log.txt
 	
 	# Concatenate the 2 mates of each unmapped read
@@ -216,12 +217,12 @@ cat TE_names.txt | while read line ; do
 		awk '{print $1"/1""\n"$1"/2"}' | \
 		sort -u > $TmpResultsDir/reads.name 2>> $TmpDir/log.txt
 
-	java -jar $picardDir/picard.jar FilterSamReads I=$TmpResultsDir/$BAMname-$TE.sam \
+	$picardDir/picard FilterSamReads I=$TmpResultsDir/$BAMname-$TE.sam \
 		FILTER=includeReadList READ_LIST_FILE=$TmpResultsDir/reads.name \
 		OUTPUT=$TmpResultsDir/$BAMname-$TE-selected.sam \
 		2>> $TmpResultsDir/log.txt 2>> $TmpDir/log.txt
 
-	java -jar $picardDir/picard.jar SamToFastq I=$TmpResultsDir/$BAMname-$TE-selected.sam \
+	$picardDir/picard SamToFastq I=$TmpResultsDir/$BAMname-$TE-selected.sam \
 		FASTQ=$TmpResultsDir/$BAMname-$TE-split.fastq \
 		2>> $TmpResultsDir/log.txt 2>> $TmpDir/log.txt
 

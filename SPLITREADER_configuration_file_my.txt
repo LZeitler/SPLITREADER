@@ -1,0 +1,51 @@
+### EXAMPLE CONFIGURATION FI FOR RUNING SPLITREADER PIPELINE ###
+### SEE readme.txt for details ###
+
+# Path to output direcoty
+OutputDir=/cluster/scratch/zeitlerl/splitreader/20200331214043/out/
+
+# Path to temporary directory
+Tmp=/cluster/scratch/zeitlerl/splitreader
+
+## Path to input bam file:
+in=/cluster/scratch/zeitlerl/bam20200302_ph/A0183_realigned.bam
+
+## list of TEs to analyze
+listTE=/cluster/scratch/zeitlerl/splitreader/teanno-tab.bed
+
+## Set the mininum read length (bp). If not specified, the program will calculate the longest read
+LENGTH=100
+
+
+## Set the minimum number of split-reads in each extrimity of the TE. (default =5 ). This value should be at least 3, if not, it is forced to be 3
+READS=5
+
+## Set minimun cluster coverage 
+# maxcov=60
+
+#### BEGLONGS IN README: If not specified, the program calculate it. To this end, the program calculates the minimum number of reads as 3 standard deviation under the mean whole genome coverage
+
+#Number of threads for mapping
+CORES=4
+
+## Folder containing the Bowtie2 index for each TE sequence
+SequencesDir=/cluster/scratch/zeitlerl/splitreader/20200331214043/
+
+## Path to Bowtie2 indexes for reference genome (prefix)
+## For instance if the first index file is /path/to/Bowtie2_indexes/TAIR10.1.bt2
+## The following GenomeIndexFile is needed:
+GenomeIndexFile=/cluster/scratch/zeitlerl/pseudohap_a_diploid.mod
+
+## Bowtie2 executable path (no final slash)
+Bowtie2Dir=/cluster/apps/gdc/bowtie2/2.3.4.2
+
+## samtools executable path (no final slash)
+samtoolsDir=/cluster/apps/gdc/samtools/1.9/bin
+
+## bedtools executable path (no final slash)
+bedtoolsdir=/cluster/apps/gdc/bedtools/2.28.0/bin
+
+## Path to executable picard.jar file (no final slash)
+picardDir=/cluster/apps/gdc/picard-tools/2.21.3
+
+
