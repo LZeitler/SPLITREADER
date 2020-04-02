@@ -150,7 +150,8 @@ echo "Extracting unmapped reads from $in"
 pe=1 # spare some time, my stuff is always paired 
 
 # Get unmapped reads from bam file
-$samtoolsDir/samtools view -f 4 -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.txt
+# We want paired reads & read and mate unmapped. Flag 13
+$samtoolsDir/samtools view -f 13 -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.txt
 
 # Convert the bam files of unmapped reads into fastq files
 # If single end data
@@ -192,7 +193,11 @@ cat TE_names.txt | while read line ; do
 
 	#set TSD to 3 if no TSD is provided		
 	if [ -z "$TSD" ]; then 
-		$TSD=3
+	    TSD=3
+	fi
+
+	if [ "$TSD" == "." ]; then
+	    TSD=3
 	fi
 
 	echo -e "\n##### RUNNING SPLIT-READ ANALYSIS ON $TE ######\n"    
