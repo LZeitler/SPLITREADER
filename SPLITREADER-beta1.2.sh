@@ -151,7 +151,7 @@ pe=1 # spare some time, my stuff is always paired
 
 # Get unmapped reads from bam file
 # We want paired reads & read and mate unmapped. Flag 13
-$samtoolsDir/samtools view -f 13 -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.txt
+$samtoolsDir/samtools view -f 13 -@ $CORES -u $in > $TmpDir/$BAMname.bam 2>> $TmpDir/log.txt
 
 # Convert the bam files of unmapped reads into fastq files
 # If single end data
@@ -204,7 +204,7 @@ cat TE_names.txt | while read line ; do
 
 	# Selecting split-reads by mapping the unmapped reads over TE extremities
 	echo "Selecting split-reads"
-
+##lzhere
 	$Bowtie2Dir/bowtie2 -x $SequencesDir/$TE -U $TmpDir/$BAMname.fastq \
    -S $TmpResultsDir/$BAMname-$TE.sam --local --very-sensitive \
    --threads $CORES 2>> $TmpDir/log.txt 
